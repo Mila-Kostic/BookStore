@@ -120,11 +120,16 @@ function createEditDeleteTable() {
             <td>${book.publisher}</td>
             <td>${book.date}</td>
             <td><button class="btn btn-sm btn-danger">Edit</button></td>
-            <td><button class="btn btn-sm btn-warning">Delete</button></td>
+            <td><button class="btn btn-sm btn-warning delete-btns" data-id="${book.id}"">Delete</button></td>
             </tr>
         `.trim();
     })
     editTbody.innerHTML = text;
+    let allDelete = document.querySelectorAll('.delete-btns');
+    allDelete.forEach(book => {
+        book.addEventListener('click', deleteBook);
+
+    })
 }
 
 //Save new book
@@ -165,4 +170,10 @@ function resetInutForm() {
     inputDate.value = "";
     genreSelect.value = "";
     publisherSelect.value = "";
+}
+function deleteBook(){
+    let id = this.getAttribute('data-id');
+    db = db.filter(book => book.id !== id);
+    createBooksTable();
+    displayBooksView();
 }
