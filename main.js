@@ -31,6 +31,8 @@ let editGenreSelect = document.querySelector('#e-genre-select');
 let editPublisherSelect = document.querySelector('#e-publisher-select');
 let editData = document.querySelector('#e-date');
 
+//search
+let searchField = document.querySelector('[type="search"]');
 
 // LISTENERS
 booksViewBtn.addEventListener('click', displayBooksView);
@@ -38,11 +40,23 @@ newBookViewBtn.addEventListener('click', displayNewBookView);
 editDeleteViewBtn.addEventListener('click', displayEditDeleteBookView);
 saveBtn.addEventListener('click', saveNewBook);
 editSaveBtn.addEventListener('click', editBook);
+searchField.addEventListener('input',getSearchTerm);
+
 
 function save() {
     localStorage.db = JSON.stringify(db);
 }
 
+
+function getSearchTerm(){
+    let term = this.value;
+    let currentDb = db.filter(el => {
+        return el.name.indexOf(term) !== -1 ||
+        el.genre.indexOf(term) !== -1 ||
+        el.publisher.indexOf(term) !== -1
+    })
+    createBooksTable(currentDb);
+}
 //Save new book
 function saveNewBook() {
     let newBook = {
